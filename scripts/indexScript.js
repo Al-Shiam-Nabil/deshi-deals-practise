@@ -2,6 +2,75 @@ function getId(id) {
     return document.getElementById(id);
 }
 
+// event deligation
+getId('product-btn-parent').addEventListener('click', function (e) {
+
+    if (e.target.className.includes('add-to-cart-btn')) {
+        const productButton = e.target;
+
+        const btnParent = productButton.parentNode.parentNode.parentNode;
+        // get product data
+        const productImage = btnParent.children[0].children[0].src;
+        const productName = btnParent.children[1].children[0].innerText;
+        const productPrice = Number(
+            btnParent.children[1].children[1].children[0].innerText
+        );
+
+        // get purches data
+        const totalAmount = Number(getId("total-amount").innerText);
+        const totalProduct = Number(getId("total-product").innerText);
+        const totalPay = Number(getId("total-pay").innerText);
+
+        // get add cart container
+        const shopingCartContainer = getId("shoping-cart-container");
+
+
+        //create a new div
+        const newDiv = document.createElement("div");
+
+        // create new card
+        newDiv.innerHTML = `
+<section class="flex justify-between items-center px-4 py-2.5 bg-main-bg rounded-xl">
+                                <img src="${productImage}" alt="image"
+                                    class="w-[100px] h-[100px] object-contain" />
+                                <div class="">
+                                    <h3 class="text-lg font-medium">${productName}</h3>
+                                    <p class="text-gray font-medium">${productPrice}</p>
+                                </div>
+                            </section>
+
+`;
+
+        // set add cart container
+        shopingCartContainer.appendChild(newDiv);
+
+        // set product price
+        const currentTotalPrice = productPrice + totalAmount;
+        getId("total-amount").innerText = currentTotalPrice.toFixed(2);
+        getId("total-product").innerText = totalProduct + 1;
+        getId("total-pay").innerText = currentTotalPrice.toFixed(2);
+    }
+})
+
+// clear button functionality
+getId('clear-btn').addEventListener('click', function () {
+    getId("shoping-cart-container").innerHTML = '';
+    getId("total-amount").innerText = '0';
+    getId("total-product").innerText = '0';
+    getId("total-pay").innerText = '0';
+})
+
+
+
+
+
+
+
+
+
+
+
+/*
 //DOM traversal method
 
 const addToCartBtn = document.getElementsByClassName("add-to-cart-btn");
@@ -54,14 +123,12 @@ for (const addBtn of addToCartBtn) {
         getId("total-pay").innerText = currentTotalPrice.toFixed(2);
     });
 }
+*/
 
-// clear button functionality
-getId('clear-btn').addEventListener('click', function () {
-    getId("shoping-cart-container").innerHTML = '';
-    getId("total-amount").innerText = '0';
-    getId("total-product").innerText = '0';
-    getId("total-pay").innerText = '0';
-})
+
+
+
+
 
 //traditional method
 /*
